@@ -1,0 +1,32 @@
+﻿resource "proxmox_vm_qemu" "virtual_machines" {
+  name             = {{ hostname }}
+  qemu_os          = "other"
+  desc             = "{{ description }}"
+  target_node      = "{{ targetNode }}"
+  os_type          = "cloud-init"
+  full_clone       = true
+  clone            = "{{ template }}"
+  memory           = {{ memory }}
+  cores            = {{ cores }}
+  ssh_user         = "{{ sshUser }}"
+  ciuser           = "{{ sshUser }}"
+  ipconfig0        = "ip={{ ip }}/8,gw={{ gateway }}"
+  cipassword       = "{{ password }}"
+  automatic_reboot = true
+  sshkeys          = "{{ sshKeys }}"
+
+  disk {
+    storage = "{{ storageName }}"
+    type    = "{{ diskType }}"
+    size    = {{ storageAmount }}
+  }
+
+  network {
+    bridge   = "{{ networkBridgeType }}"
+    model    = "virtio"
+    mtu      = 0
+    queues   = 0
+    rate     = 0
+    firewall = false
+  }
+}

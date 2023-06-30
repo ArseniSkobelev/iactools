@@ -20,10 +20,11 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 	}
 
 	cpuCoresPrompt := promptui.Prompt{
-		Label:     "Enter amount of cores desired",
-		Validate:  validateNumber,
-		Default:   "2",
-		AllowEdit: true,
+		Label:       "Enter amount of cores desired",
+		Validate:    validateNumber,
+		Default:     "2",
+		AllowEdit:   true,
+		HideEntered: true,
 	}
 
 	cpuCores, err := cpuCoresPrompt.Run()
@@ -34,10 +35,11 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 	}
 
 	amountOfMemoryPrompt := promptui.Prompt{
-		Label:     "Enter amount of memory (RAM) (in MB)",
-		Validate:  validateNumber,
-		Default:   "2048",
-		AllowEdit: true,
+		Label:       "Enter amount of memory (RAM) (in MB)",
+		Validate:    validateNumber,
+		Default:     "2048",
+		AllowEdit:   true,
+		HideEntered: true,
 	}
 
 	memory, err := amountOfMemoryPrompt.Run()
@@ -48,10 +50,11 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 	}
 
 	storagePrompt := promptui.Prompt{
-		Label:     "Enter amount of storage (disk) (in GB)",
-		Validate:  validateNumber,
-		Default:   "32",
-		AllowEdit: true,
+		Label:       "Enter amount of storage (disk) (in GB)",
+		Validate:    validateNumber,
+		Default:     "32",
+		AllowEdit:   true,
+		HideEntered: true,
 	}
 
 	storage, err := storagePrompt.Run()
@@ -62,9 +65,10 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 	}
 
 	hostnamePrompt := promptui.Prompt{
-		Label:     "Enter the hostname of the machine",
-		Default:   "virtual-machine",
-		AllowEdit: true,
+		Label:       "Enter the hostname of the machine",
+		Default:     "virtual-machine",
+		AllowEdit:   true,
+		HideEntered: true,
 	}
 
 	hostname, err := hostnamePrompt.Run()
@@ -75,7 +79,8 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 	}
 
 	ipPrompt := promptui.Prompt{
-		Label: "Enter the IP of the machine",
+		Label:       "Enter the IP of the machine",
+		HideEntered: true,
 	}
 
 	ip, err := ipPrompt.Run()
@@ -85,11 +90,16 @@ func GetVirtualMachineData() (vmData VirtualMachine, err error) {
 		os.Exit(1)
 	}
 
+	gateway, _ := ShowInputPrompt("Enter gateway", true)
+	sshKey, _ := ShowInputPrompt("Enter a public ssh-key to use on the newly create VM", true)
+
 	vmData.Cores = cpuCores
 	vmData.Memory = memory
 	vmData.Hostname = hostname
 	vmData.Storage = storage
 	vmData.Ip = ip
+	vmData.Gateway = gateway
+	vmData.PublicSshKey = sshKey
 
 	return vmData, nil
 }

@@ -16,8 +16,31 @@ var rootCmd = &cobra.Command{
 	Long:    `iactools is a CLI tool to streamline manual editing and provisioning of IaC files`,
 	PreRunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) == 0 {
-			command, _ := iactools.GetCommand()
-			fmt.Println(command)
+			// handle 0 args
+			command, _ := iactools.ShowSelectPrompt(
+				"Select command",
+				[]string{"Create"},
+				true,
+			)
+
+			resourceType, _ := iactools.ShowSelectPrompt(
+				"Select resource type",
+				[]string{"Kubernetes"},
+				true,
+			)
+
+			if resourceType == "Kubernetes" {
+				if command == "Create" {
+					// handle k8s resource type
+					k8sResourceType, _ := iactools.ShowSelectPrompt(
+						"Select Kubernetes resource",
+						[]string{"Node", "Cluster"},
+						true,
+					)
+
+					_ = iactools.CreateKubernetes(k8sResourceType)
+				}
+			}
 			os.Exit(0)
 		}
 		return nil

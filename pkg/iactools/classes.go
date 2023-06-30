@@ -23,9 +23,11 @@ type ProxmoxTokenCredentials struct {
 }
 
 type VirtualMachine struct {
-	Memory   string
-	Storage  string
-	Hostname string
-	Ip       string
-	Cores    string
+	Memory       string
+	Storage      string
+	Hostname     string
+	Ip           string
+	Gateway      string
+	Cores        string
+	PublicSshKey string
 }
